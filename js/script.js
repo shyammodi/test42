@@ -1,6 +1,22 @@
-/* Sets a random integer quantity in range [1, 20] for each flavor. */
+/* Sets a random integer quantity in range [1, 20] for each flavor.
+   Referenced https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random,
+   https://developer.mozilla.org/en-US/docs/Web/API/Node/insertBefore,
+   https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement,
+   https://www.w3schools.com/jsref/prop_node_childnodes.asp,
+   https://stackoverflow.com/questions/195951/change-an-elements-class-with-javascript,
+   https://www.w3schools.com/cssref/css_selectors.asp,
+   https://css-tricks.com/multiple-class-id-selectors/, and
+   https://www.w3schools.com/jsref/met_document_createtextnode.asp*/
 function setQuantities() {
-  // TODO
+  const quantityPriceList = document.querySelectorAll(".flavor .meta")
+  for (let i = 0; i < quantityPriceList.length; i++) {
+    const quantityElement = document.createElement("span")
+    quantityElement.setAttribute("class", "quantity")
+    const quantityNumber = Math.floor(Math.random()*20 + 1)
+    quantityElement.appendChild(document.createTextNode(quantityNumber))
+    const nextElement = quantityPriceList[i].childNodes[0]
+    quantityPriceList[i].insertBefore(quantityElement, nextElement)
+  }
 }
 
 /* Extracts and returns an array of flavor objects based on data in the DOM. Each
@@ -11,9 +27,23 @@ function setQuantities() {
  * description: the description of the flavor
  * price: how much the flavor costs
  * quantity: how many cups of the flavor are available
+ * I referenced: https://www.w3schools.com/jsref/jsref_parseint.asp,
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseFloat, and
+ * https://stackoverflow.com/questions/2556338/currency-math-in-javascript
  */
 function extractFlavors() {
-  // TODO
+  const flavors = []
+  const flavorList = document.querySelectorAll(".flavor")
+  for (let i = 0; i < flavorList.length; i++) {
+    const currentFlavor = {}
+    currentFlavor.element = flavorList[i]
+    currentFlavor.name = flavorList[i].querySelector("h2").innerHTML
+    currentFlavor.description = flavorList[i].querySelector(".description p").innerHTML
+    currentFlavor.price = parseFloat(flavorList[i].querySelector(".price").innerHTML.replace("$",""))
+    currentFlavor.quantity = parseInt(flavorList[i].querySelector(".quantity").innerHTML)
+    flavors.push(currentFlavor)
+  }
+  return flavors
 }
 
 /* Calculates and returns the average price of the given set of flavors. The
