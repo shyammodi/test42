@@ -47,16 +47,32 @@ function extractFlavors() {
 }
 
 /* Calculates and returns the average price of the given set of flavors. The
- * average should be rounded to two decimal places. */
+ * average should be rounded to two decimal places.
+ * I referenced https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach,
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed,
+ * https://docs.microsoft.com/en-us/scripting/javascript/reference/foreach-method-array-javascript#callback-function-syntax, and
+ * https://medium.com/@_edhuang/javascript-for-foreach-and-callbacks-206288604656*/
 function calculateAveragePrice(flavors) {
-  // TODO
+  let sum = 0
+  let count = 0
+  flavors.forEach(value => {
+    sum += value.price
+    count++
+  })
+  const averagePrice = Number.parseFloat(sum/count).toFixed(2)
+  return averagePrice
 }
 
 /* Finds flavors that have prices below the given threshold. Returns an array
  * of strings, each of the form "[flavor] costs $[price]". There should be
- * one string for each cheap flavor. */
+ * one string for each cheap flavor.
+ * I referenced  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map,
+ * and https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+ */
 function findCheapFlavors(flavors, threshold) {
-  // TODO
+  const cheapFlavors = flavors.filter(flavor => flavor.price < threshold)
+  const cheapFlavorsString = cheapFlavors.map(flavor => flavor.name + " costs $" + flavor.price)
+  return cheapFlavorsString
 }
 
 /* Populates the select dropdown with options. There should be one option tag
