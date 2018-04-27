@@ -76,15 +76,41 @@ function findCheapFlavors(flavors, threshold) {
 }
 
 /* Populates the select dropdown with options. There should be one option tag
- * for each of the given flavors. */
+ * for each of the given flavors.
+ * I referenced https://www.w3schools.com/cssref/css_selectors.asp and
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach*/
 function populateOptions(flavors) {
-  // TODO
+  const menu = document.querySelector("#footer select")
+  menu.innerHTML = ""
+  const allFlavors = extractFlavors();
+  allFlavors.forEach((flavor, index) => {
+    const flavorElement = document.createElement("option")
+    flavorElement.setAttribute("value", index)
+    const flavorText = flavor.name
+    flavorElement.appendChild(document.createTextNode(flavorText))
+    menu.appendChild(flavorElement)
+  })
 }
 
 /* Processes orders for the given set of flavors. When a valid order is made,
- * decrements the quantity of the associated flavor. */
+ * decrements the quantity of the associated flavor.
+ * I referenced https://stackoverflow.com/questions/5502305/how-do-i-reset-the-value-of-a-text-input-when-the-page-reloads,
+   and https://stackoverflow.com/questions/11563638/how-do-i-get-the-value-of-text-input-field-using-javascript*/
 function processOrders(flavors) {
-  // TODO
+  const submitButton = document.querySelector("[type=submit]")
+  submitButton.addEventListener("click", event => {
+    event.preventDefault()
+    const flavorIndex = document.querySelector("[name=flavor]").value
+    const orderQuantity = document.querySelector("[name=amount]").value
+    if (orderQuantity <= flavors[flavorIndex].quantity)
+    {
+      flavors[flavorIndex].quantity = flavors[flavorIndex].quantity - orderQuantity
+      const quantityPriceList = document.querySelectorAll(".flavor .meta")
+      const selectedFlavor = quantityPriceList[flavorIndex]
+      selectedFlavor.childNodes[0].innerHTML = flavors[flavorIndex].quantity
+      document.querySelector("[name=amount]").value = ""
+    }
+  })
 }
 
 /* Highlights flavors when clicked to make a simple favoriting system. */
