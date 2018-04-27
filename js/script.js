@@ -113,9 +113,20 @@ function processOrders(flavors) {
   })
 }
 
-/* Highlights flavors when clicked to make a simple favoriting system. */
+/* Highlights flavors when clicked to make a simple favoriting system.
+* I referenced https://developer.mozilla.org/en-US/docs/Web/API/Element/classList*/
 function highlightFlavors(flavors) {
-  // TODO
+  flavors.forEach(flavor => {
+    const flavorElement = flavor.element
+    flavorElement.addEventListener("click", event => {
+      if(flavorElement.classList.contains("highlighted")) {
+        flavorElement.classList.remove("highlighted")
+      }
+      else {
+          flavorElement.classList.add("highlighted")
+      }
+    })
+  })
 }
 
 
